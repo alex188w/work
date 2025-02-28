@@ -36,6 +36,8 @@ class ImageUploadController extends Controller
         if ($request->file('image')) {
             // Определение пути для сохранения
             $path = $request->file('image')->store("works/{$ustanovka_id}", 'public');
+            dd($path);  
+            var_dump($path);
 
             // Обновление поля image_path в базе данных
             $work->image_path = $path;

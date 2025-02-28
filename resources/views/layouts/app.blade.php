@@ -7,7 +7,7 @@
     <title>@yield('title', 'Мой сайт')</title>
     <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
     {{-- <link href="https://alex18w.ru/work/css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
-    <link href="https://alex18.ru/work/css2/style1.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link href="https://alex18.ru/work/css2/style4.css" rel="stylesheet" type="text/css" id="theme-opt" />
     <link href="https://alex18.ru/work/css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" />
     {{-- <link href="../css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
     {{-- <link href="../css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
@@ -15,9 +15,9 @@
 
 <body>
 
-    <header>
-        <h1 style="text-align: center">Техническое обслуживание и ремонт</h1>
-        <h2 style="text-align: center">участок защиты от коррозии</h2>
+    <header style="margin-right: 30%">
+        <h2 style="text-align: center">Техническое обслуживание и ремонт</h2>
+        <h3 style="text-align: center">участок защиты от коррозии</h3>
     </header>
 
     <div class="content">
