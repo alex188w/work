@@ -7,10 +7,11 @@
     <title>@yield('title', 'Мой сайт')</title>
     <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
     {{-- <link href="https://alex18w.ru/work/css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
-    <link href="https://alex18.ru/work/css2/style4.css" rel="stylesheet" type="text/css" id="theme-opt" />
-    <link href="https://alex18.ru/work/css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    {{-- <link href="https://alex18.ru/work/css2/style4.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
+    {{-- <link href="https://alex18.ru/work/css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
     {{-- <link href="../css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
-    {{-- <link href="../css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
+    <link href="../css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" /> 
+    <link href="../css2/style4.css" rel="stylesheet" type="text/css" id="theme-opt" /> 
 </head>
 
 <body>
@@ -31,7 +32,7 @@
         <div class="sidebar">
             <main>
                 @yield('sidebar')
-            </main>  
+            </main>
         </div>
     </div>
 

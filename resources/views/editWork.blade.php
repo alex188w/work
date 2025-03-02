@@ -9,15 +9,18 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alex18w</title>
-    <link rel="shortcut icon" href="./img/LogoA.JPG">
+    {{-- <link rel="shortcut icon" href="./img/LogoA.JPG"> --}}
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
     {{-- <link href="path/to/lightbox.css" rel="stylesheet"> --}}
-    <link href="https://alex18.ru/work/css2/style1.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    {{-- <link href="https://alex18.ru/work/css2/style1.css" rel="stylesheet" type="text/css" id="theme-opt" />
     <link href="https://alex18.ru/work/css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" />
-    <link href="https://alex18.ru/work/css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link href="https://alex18.ru/work/css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
     {{-- <script src="../css2/script.js"></script> --}}
-    {{-- <link href="../css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" />
-    <link href="../css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
+    {{-- <link href="../css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
+    <link href="{{ asset('css2/style.css') }}" rel="stylesheet" type="text/css" id="theme-opt">
+    <link href="{{ asset('css2/style2.css') }}" rel="stylesheet" type="text/css" id="theme-opt">
+    <link href="{{ asset('css2/style4.css') }}" rel="stylesheet" type="text/css" id="theme-opt">
+
 </head>
 
 <body>
@@ -150,8 +153,9 @@
                     @csrf
 
                     <div class="photo">
-                        <div class="photo-add">                 
-                            <label style="padding: 5px 0 0 5px;" class="form-label" for="image">Загрузить изображение:</label>
+                        <div class="photo-add">
+                            <label style="padding: 5px 0 0 5px;" class="form-label" for="image">Загрузить
+                                изображение:</label>
                             <div class="drop-area" id="drop-area">
                                 <p class="photo-text">Перетащите изображение сюда или</p>
                                 <input type="file" id="imageInput" name="imageInput" accept="image/*"
@@ -184,7 +188,8 @@
                             </div>
                         </div>
                         <div class="photo-view">
-                            <label style="padding-top: 5px; text-align: center" class="form-label" for="image">Загруженные изображения:</label>
+                            <label style="padding-top: 5px; text-align: center" class="form-label"
+                                for="image">Загруженные изображения:</label>
                             <div class="view-area" id="drop-area">
                                 <div class="pre-view">
                                     <!-- Кнопка для открытия галереи -->
@@ -215,7 +220,7 @@
                     </div>
                     <input type="hidden" name="csrf_token" value="XfJveHBZrE">
                 </form>
-{{-- 
+                {{-- 
                 @if ($errors->any())
                     <ul>
                         @foreach ($errors->all() as $error)

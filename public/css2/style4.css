@@ -12,12 +12,12 @@ body {
     /* background-color: #020a18; */
     padding-left: 0, 5%;
     padding-right: 0, 5%;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'Literata', serif;
+    /* font-family: "Open Sans", sans-serif !important; */
     background-image: url('../img/footer4.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     /* height: 100vh; */
-    font-family: Arial, sans-serif;
 }
 
 .header {

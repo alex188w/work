@@ -7,11 +7,12 @@
     <title>Alex18w</title>
     <link rel="shortcut icon" href="./img/LogoA.JPG">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://alex18.ru/work/css2/style1.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    {{-- <link href="https://alex18.ru/work/css2/style1.css" rel="stylesheet" type="text/css" id="theme-opt" />
     <link href="https://alex18.ru/work/css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" />
-    <link href="https://alex18.ru/work/css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" />
-    {{-- <link href="../css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" />
-    <link href="../css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
+    <link href="https://alex18.ru/work/css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
+    <link href="../css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link href="../css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" />
+    <link href="../css2/style4.css" rel="stylesheet" type="text/css" id="theme-opt" />
 
 </head>
 
