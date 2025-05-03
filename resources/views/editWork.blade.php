@@ -8,15 +8,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alex18w</title>
-    {{-- <link rel="shortcut icon" href="./img/LogoA.JPG"> --}}
-    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> --}}
-    {{-- <link href="path/to/lightbox.css" rel="stylesheet"> --}}
-    {{-- <link href="https://alex18.ru/work/css2/style1.css" rel="stylesheet" type="text/css" id="theme-opt" />
-    <link href="https://alex18.ru/work/css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" />
-    <link href="https://alex18.ru/work/css2/style2.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
-    {{-- <script src="../css2/script.js"></script> --}}
-    {{-- <link href="../css2/style.css" rel="stylesheet" type="text/css" id="theme-opt" /> --}}
+    <title>ТОиР НЛПУМГ</title>
+    <link rel="stylesheet" href="{{ asset('lightbox/css/lightbox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/font-awesome/css/font-awesome.min.css') }}">
+
     <link href="{{ asset('css2/style.css') }}" rel="stylesheet" type="text/css" id="theme-opt">
     <link href="{{ asset('css2/style2.css') }}" rel="stylesheet" type="text/css" id="theme-opt">
     <link href="{{ asset('css2/style4.css') }}" rel="stylesheet" type="text/css" id="theme-opt">
@@ -24,34 +19,32 @@
 </head>
 
 <body>
-    {{-- @extends('layouts.app')
-@section('content')
-    <h2>Редактирование работы</h2> --}}
-
     <div class="modal fade show" id="popup442073" tabindex="-1" aria-labelledby="popupLabel442073" remove-close="true"
         data-type="modal-lg modal-center " aria-modal="true" role="dialog" style="display: block;">
         <div class="modal-dialog modal-lg modal-center">
             <div class="modal-content bg-body ">
                 <div class="modal-header">
-                    <h5 class="modal-title " id="popupLabel442073">
-                        {{ $work->is_done === 1 ? 'Изменить результаты проведения' : 'Внести результаты проведения' }}
-                    </h5>
+                    <div class="modal-title">
+                        <h5 id="popupLabel442073">
+                            {{ $work->is_done === 1 ? 'Изменить результаты проведения' : 'Внести результаты проведения' }}
+                        </h5>
+                        <div class="message">
+                            @if (session('text'))
+                                <p style="color: red; margin-bottom: 0px;">{{ session('text') }}</p>
+                            @endif
+                        </div>
+
+                    </div>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"
                         onclick="window.location='{{ route('showWork', ['id' => $ustanovka_id]) }}'"></button>
                 </div>
 
-                <form id="uploadForm"
+                <form id="updateForm"
                     action="{{ route('update', ['ustanovka_id' => $ustanovka_id, 'work_id' => $work->id]) }}"
                     enctype="multipart/form-data" method="POST">
                     @csrf
 
-                    <div class="message">
-                        @if (session('text'))
-                            <p style="color: red">{{ session('text') }}</p>
-                        @endif
-                    </div>
-
-                    <div class="modal-body" style="max-height:75vh; overflow:auto; overflow-x:hidden;">
+                    <div class="modal-body">
                         <div class="id_name">
                             <div class="token col-sm-2 pb-2">
                                 <label style="padding-top: 5px;" class="form-label">id установки</label>
@@ -61,55 +54,71 @@
                             </div>
                             <div class="token col-sm-3 pb-2">
                                 <label style="padding-top: 5px;" class="form-label">Наименование</label>
-                                <input type="text" id="ustanovka_name" value="{{ $ustanovkaName }}" placeholder=""
+                                <input type="text" name="ustanovka_name" id="ustanovka_name"
+                                    value="{{ $ustanovkaName }}" placeholder=""
                                     class="form-control form-control-default" required="" autocomplete="off"
                                     data-mask="phone-1" data-init-mask="true">
                             </div>
-                            <div class="token col-sm-3 pb-2">
-                                <label style="padding-top: 5px;" class="form-label">Вид работ</label>
-                                <input type="text" id="ustanovka_name1" value="{{ $work->type_of_work }}"
-                                    placeholder="" name="type_of_work" class="form-control form-control-default"
-                                    required="" autocomplete="off" data-mask="phone-1" data-init-mask="true"
-                                    list="viewWorks" />
-                                <datalist id="viewWorks">
-                                    <option>ТО</option>
-                                    <option>ТР</option>
-                                    <option>ВНЕПЛАНОВЫЕ</option>
-                                </datalist>
-                            </div>
+
                             <div class="token col-sm-3 pb-2">
                                 <label style="padding-top: 5px;" class="form-label">Дата</label>
                                 <input type="date" id="dateField" value="{{ $work->work_date }}" placeholder=""
                                     name="work_date" class="form-control form-control-default" required=""
                                     autocomplete="off" data-mask="phone-1" data-init-mask="true">
                             </div>
+
+                            <div class="token col-sm-3 pb-2">     
+                                <label style="padding-top: 5px;" class="form-label">Вид работ</label>
+                                <div style="position: relative; display: inline-block; width: 100%;">
+                                    <div class="box">
+                                        <select id="ustanovka_name1" placeholder="" name="type_of_work" required>
+                                            <option value="ТО">ТО</option>
+                                            <option value="ТР">ТР</option>
+                                            <option value="ВНЕПЛАНОВЫЕ">ВНЕПЛАНОВЫЕ</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="parametr">
-                            <div class="token col-sm-2 pb-2">
+                            <div class="form-data">
                                 <label style="padding-top: 5px;" class="form-label">I, A</label>
                                 <input type="double" id="ustanovka_id3" value="{{ $work->I }}" placeholder=""
-                                    name="I" class="form-control form-control-default" required=""
-                                    autocomplete="off" data-mask="phone-1" data-init-mask="true">
+                                    name="I" class="form-control form-control-default" autocomplete="off"
+                                    data-mask="phone-1" data-init-mask="true">
                             </div>
-                            <div class="token col-sm-3 pb-2">
+                            <div class="form-data">
                                 <label style="padding-top: 5px;" class="form-label">U, B</label>
                                 <input type="double" id="ustanovka_id4" value="{{ $work->U }}" placeholder=""
-                                    name="U" class="form-control form-control-default" required=""
-                                    autocomplete="off" data-mask="phone-1" data-init-mask="true">
+                                    name="U" class="form-control form-control-default" autocomplete="off"
+                                    data-mask="phone-1" data-init-mask="true">
                             </div>
-
-                            <div class="token col-sm-3 pb-2">
+                            <div class="form-data">
                                 <label style="padding-top: 5px;" class="form-label">Uсум</label>
                                 <input type="double" id="ustanovka_id7" value="{{ $work->Usum }}" placeholder=""
-                                    name="Usum" class="form-control form-control-default" required=""
-                                    autocomplete="off" data-mask="phone-1" data-init-mask="true">
+                                    name="Usum" class="form-control form-control-default" autocomplete="off"
+                                    data-mask="phone-1" data-init-mask="true">
                             </div>
-                            <div class="token col-sm-3 pb-2">
+                            <div class="form-data">
                                 <label style="padding-top: 5px;" class="form-label">Uпол</label>
                                 <input type="double" id="ustanovka_id8" value="{{ $work->Upol }}" placeholder=""
-                                    name="Upol" class="form-control form-control-default" required=""
-                                    autocomplete="off" data-mask="phone-1" data-init-mask="true">
+                                    name="Upol" class="form-control form-control-default" autocomplete="off"
+                                    data-mask="phone-1" data-init-mask="true">
+                            </div>
+                            <div class="form-data">
+                                <label style="padding-top: 5px;" class="form-label">СНВ</label>
+                                <input type="double" id="ustanovka_id8" value="{{ $work->snv }}" placeholder=""
+                                    name="snv" class="form-control form-control-default" autocomplete="off"
+                                    data-mask="phone-1" data-init-mask="true">
+                            </div>
+
+                            <div class="form-data">
+                                <label style="padding-top: 5px;" class="form-label">ЭЭ</label>
+                                <input type="double" id="ustanovka_id8" value="{{ $work->EE }}" placeholder=""
+                                    name="EE" class="form-control form-control-default" autocomplete="off"
+                                    data-mask="phone-1" data-init-mask="true">
                             </div>
                         </div>
 
@@ -132,22 +141,48 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="journal">
+                            <div class="journal-check">
+                                <label style="padding-top: 5px; text-align: center" class="form-label"
+                                    for="image">Техническая документация:</label>
+                                <div class="view-journal">
+
+                                    <input type="hidden" name="is_done" id="is_done" value="0">
+
+                                    <div class="submit-save">
+                                        <p class="journal-title">Журнал выдачи заданий</p>
+                                        <input type="checkbox" class="done-checkbox" value="1">
+                                    </div>
+                                    <div class="submit-save">
+                                        <p class="journal-title">Журнал выдачи ключей</p>
+                                        <input type="checkbox" class="done-checkbox" value="1">
+                                    </div>                                    
+                                    <div class="submit-save">
+                                        <p class="journal-title">Полевой журнал УКЗ</p>
+                                        <input type="checkbox" class="done-checkbox" value="1">
+                                    </div>
+                                    <div class="submit-save">
+                                        <p class="journal-title">Журнал эксп. и ремонта</p>
+                                        <input type="checkbox" class="done-checkbox" value="1">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-light" data-bs-dismiss="modal"
                             onclick="window.location='{{ route('showWork', ['id' => $ustanovka_id]) }}'">Закрыть</button>
                         <div class="submit-save">
-                            <p class="save-text">Работа проведена!</p>
                             <button type="submit" name="submit"
                                 class="btn js-form-btn btn-primary auto">Сохранить</button>
                         </div>
                     </div>
-                    <input type="hidden" name="is_done" value="1">
                     <input type="hidden" name="csrf_token" value="XfJveHBZrE">
                 </form>
 
-                <form id="uploadForm"
+                <form id="uploadForm" onsubmit="return false;"
                     action="{{ route('work.upload', ['ustanovka_id' => $ustanovka_id, 'work_id' => $work->id]) }}"
                     enctype="multipart/form-data" method="POST">
                     @csrf
@@ -164,10 +199,9 @@
                                     class="bg-light btn-light"
                                     onclick="document.getElementById('imageInput').click();">Выбрать
                                     файл</button>
-                                <button style="margin: 0 auto; width: 150px;" id="uploadButton"
-                                    class="bg-light btn-light" type="submit"
-                                    style="margin-top: 10px;">Загрузить</button>
 
+                                <button style="margin: 0 auto; width: 150px;" id="uploadButton"
+                                    class="bg-light btn-light" type="submit">Загрузить</button>
                                 {{-- Скрытые поля для ustanovka_id и work_id --}}
                                 <input type="hidden" id="ustanovka_id" name="ustanovka_id"
                                     value="{{ $ustanovka_id }}">
@@ -177,62 +211,50 @@
                                 <img id="imagePreview" src="" alt="Загруженное изображение"
                                     style="margin: 0 auto; margin-top: 10px; max-width: 150px; display: none;">
 
-                                {{-- <a id="imageFull" href="" data-lightbox="gallery">
-                                    <img id="imagePreview" src="" alt="Просмотреть">
-                                </a> --}}
-
-                                {{-- <a id="imageFull" style="display: none;" href="">Просмотреть</a> --}}
-                                {{-- Адрес изображения для предпросмотра --}}
-                                {{-- <input type="text" id="image-url" name="image_url"
-                                value="{{ $work->image_path ?? '' }}" readonly> --}}
+                                <div id="uploadMessage" style="display: none; color: #6668f5; font-weight: bold;"></div>
                             </div>
                         </div>
+
                         <div class="photo-view">
                             <label style="padding-top: 5px; text-align: center" class="form-label"
-                                for="image">Загруженные изображения:</label>
+                                for="image">Загруженные
+                                изображения:</label>
                             <div class="view-area" id="drop-area">
                                 <div class="pre-view">
-                                    <!-- Кнопка для открытия галереи -->
-                                    {{-- <button id="openGallery">Открыть галерею</button> --}}
-                                    @foreach ($files as $file)
-                                        {{-- <div id="gallery" style="display: none;">
-                                            @foreach ($files as $file)
-                                                @php
-                                                    // Получаем URL изображения
-                                                    $url = Storage::url($file);
-                                                @endphp
-                                                <a href="{{ $url }}" data-lightbox="gallery">
-                                                    <img src="{{ $url }}" alt="Изображение" width="100">
-                                                </a>
-                                            @endforeach
-                                        </div> --}}
-
-                                        <a href="{{ Storage::url($file) }}" data-lightbox="gallery">
-                                            <img src="{{ Storage::url($file) }}" alt="Image"
-                                                style="max-width: 100px; margin-bottom: 10px;">
+                                    @foreach (array_slice($files, 0, 2) as $file)
+                                        <a href="{{ asset('storage/' . $file) }}" data-lightbox="gallery">
+                                            <img src="{{ asset('storage/' . $file) }}" alt="Image"
+                                                style="max-height: 65px; margin-bottom: 10px;">
                                         </a>
                                     @endforeach
                                 </div>
+                                <!-- Скрытый блок для всех изображений -->
+                                <div style="display: none;">
+                                    @foreach (array_slice($files, 2) as $file)
+                                        <a href="{{ asset('storage/' . $file) }}" data-lightbox="gallery"></a>
+                                    @endforeach
+                                </div>
                             </div>
-
                         </div>
 
                     </div>
                     <input type="hidden" name="csrf_token" value="XfJveHBZrE">
                 </form>
-                {{-- 
-                @if ($errors->any())
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li style="color: red">{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                @endif --}}
             </div>
         </div>
     </div>
-    {{-- @endsection --}}
 
+    {{-- Скрипт для отправки is_done=1, если все чекбоксы -> check --}}
+    <script>
+        document.getElementById("updateForm").addEventListener("submit", function(event) {
+            let checkboxes = document.querySelectorAll(".done-checkbox");
+            let allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+
+            document.getElementById("is_done").value = allChecked ? "1" : "0";
+        });
+    </script>
+
+    {{-- Скрипт для загрузки и сохранения изображений --}}
     <script>
         document.addEventListener("DOMContentLoaded", function(event) {
             event.preventDefault();
@@ -241,10 +263,11 @@
             const dropArea = document.getElementById("drop-area");
             const imageUrlField = document.getElementById("image-url");
             const imagePreview = document.getElementById('imagePreview');
-            const imageFull = document.getElementById('imageFull');
+            // const imageFull = document.getElementById('imageFull');
             const uploadButton = document.getElementById('uploadButton');
             const ustanovkaId = document.getElementById("ustanovka_id").value;
             const workId = document.getElementById("work_id").value;
+            let messageDiv = document.getElementById('uploadMessage');
             let selectedFile;
 
             // Получение файла из input
@@ -276,7 +299,6 @@
                 dropArea.classList.remove("dragover");
                 const file = event.dataTransfer.files[0];
                 handleFile(file);
-
             });
 
             // Обработчик для выбора файла через кнопку
@@ -291,16 +313,14 @@
                 reader.onload = function(e) {
                     // Устанавливаем источник изображения
                     imagePreview.src = e.target.result;
-                    imagePreview.style.display = 'block'; // Показываем изображение
-                    imageFull.style.display = 'block';
-                    imageFull.href = imagePreview.src;
-                    // uploadFile(file);                    
+                    imagePreview.style.display = 'block'; // Показываем изображение                         
                 };
                 reader.readAsDataURL(file); // Чтение файла как URL
             }
 
             // Создание FormData и добавление файла
             uploadButton.addEventListener('click', () => {
+                event.preventDefault(); // Отключаем стандартное поведение формы
                 if (!selectedFile) {
                     alert('Сначала выберите изображение.');
                     return;
@@ -312,8 +332,7 @@
                 formData.append('_token', '{{ csrf_token() }}');
 
                 // Отправка AJAX-запроса
-
-                fetch(`/work/work/upload/${ustanovkaId}/${workId}`, {
+                fetch(`/upload/${ustanovkaId}/${workId}`, {
                         method: 'POST',
                         body: formData,
                         headers: {
@@ -323,29 +342,32 @@
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            // Обновление превью изображения
-                            // imagePreview.src = data.image_url;
-                            // imagePreview.style.display = 'block';
-                            // imageFull.href = data.image_url;
+                            console.log('файл загружен');
+                            imagePreview.src = '';
+                            imagePreview.style.display = 'none'; // Скрываем изображение
+                            messageDiv.textContent = data.message; // Выводим текст сообщения
+                            messageDiv.style.display = 'block'; // Показываем div
+                            // messageDiv.style.color = 'green'; // Задаем цвет              
                         } else {
                             alert('Ошибка: ' + data.message);
+                            messageDiv.textContent = 'Ошибка: ' + data.message;
+                            messageDiv.style.display = 'block';
+                            messageDiv.style.color = 'red'; // Красный цвет для ошибок
                         }
                     })
-                    .catch(error => console.error('Ошибка:', error));
+                    .catch(error => {
+                        messageDiv.textContent = 'Ошибка загрузки';
+                        messageDiv.style.display = 'block';
+                        messageDiv.style.color = 'red';
+                        console.error('Ошибка загрузки:', error);
+                    });
 
             });
         });
     </script>
-    {{-- Скрипт для получения галереи загруженныхи изображений --}}
-    {{-- <script src="{{ asset('js/lightbox.min.js') }}"></script>
-    <script>
-        document.getElementById('openGallery').addEventListener('click', function() {
-            // Отображаем галерею
-            document.getElementById('gallery').style.display = 'block';
-            // Инициируем клик на первом изображении
-            document.querySelector('#gallery a').click();
-        });
-    </script> --}}
+    <script src="{{ asset('js/jquery-3.7.1.js') }}"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script> --}}
+    <script src="{{ asset('lightbox/js/lightbox.min.js') }}"></script>
 </body>
 
 </html>

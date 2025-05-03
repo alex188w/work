@@ -10,7 +10,7 @@ use TCG\Voyager\Models\Role;
 use TCG\Voyager\Models\Permission;
 
 class User extends \TCG\Voyager\Models\User
-// class User extends Authenticatable
+// class User extends \TCG\Voyager\Models\User
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;

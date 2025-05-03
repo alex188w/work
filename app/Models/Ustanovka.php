@@ -35,16 +35,7 @@ class Ustanovka extends Model
     // public function addWork($name, $workDescription)
     public function addWork(array $data)
     {
-        $workModel = $this->getWorkTable();
-    
-    // Создаем новую запись через объект, а не статически
-        // $workModel->fill([
-        //     'ustanovka_id' => $this->id,
-        //     'name' => $name,
-        //     'work_date' => now(),
-        //     'work_description' => $workDescription
-        // ]);
-        
+        $workModel = $this->getWorkTable();        
         $workModel->fill($data);
         $workModel->save();
     }

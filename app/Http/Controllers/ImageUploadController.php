@@ -4,8 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use App\Models\Ustanovka;
+// use App\Models\Ustanovka;
 use App\Models\UstanovkaWork;
+// use App\Models\Drenage;
+use App\Models\DrenageWork;
+// use App\Models\Protector;
+use App\Models\ProtectorWork;
+// use App\Models\AeroLine;
+use App\Models\AeroLineWork;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\View\View;
 use Illuminate\Foundation\Application;
@@ -20,34 +26,60 @@ class ImageUploadController extends Controller
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $tableName = 'ukz_' . $ustanovka_id;
-        $workModel = new UstanovkaWork();
-        $workModel->setTable($tableName);
+        switch (true) {
+            case ($ustanovka_id < 96):
+                $tableName = 'ukz_' . $ustanovka_id;
+                $workModel = new UstanovkaWork();
+                break;
+        
+            case ($ustanovka_id > 95 && $ustanovka_id < 126):
+                $tableName = 'udz_' . $ustanovka_id;
+                $workModel = new DrenageWork();
+                break;
 
+            case ($ustanovka_id > 125 && $ustanovka_id < 138):
+                $tableName = 'upz_' . $ustanovka_id;
+                $workModel = new ProtectorWork();
+                break;
+
+            case ($ustanovka_id > 137 && $ustanovka_id < 172):
+                $tableName = 'wl_' . $ustanovka_id;
+                $workModel = new AeroLineWork();
+                break;
+        
+            default:
+                // Действие, если drenage_id == 50 
+                break;
+        }
+
+        $workModel->setTable($tableName);
         $work = $workModel->find($work_id);   
 
-        // Проверка, существует ли установка
-       
+        // Проверка, существует ли установка       
         if (!$work) {
             return response()->json(['success' => false, 'message' => 'Установка не найдена.']);
         }
-
         // Сохранение изображения
         if ($request->file('image')) {
             // Определение пути для сохранения
             $path = $request->file('image')->store("works/{$ustanovka_id}", 'public');
-            dd($path);  
-            var_dump($path);
+            // dd($path);           
 
             // Обновление поля image_path в базе данных
             $work->image_path = $path;
             $work->save();
 
             // Возвращение успешного ответа с URL изображения
-            return response()->json(['success' => true, 'image_url' => Storage::url($path)]);
+            // return response()->json(['success' => true, 'image_url' => Storage::url($path)]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Изображение загружено!',
+                'image_url' => Storage::url($path)
+            ]);
         }
 
-        return response()->json(['success' => false, 'message' => 'Ошибка при загрузке изображения.']);
+        // return response()->json(['success' => false, 'message' => 'Ошибка при загрузке изображения.']);
+        return response()->json(['success' => false, 'message' => 'Ошибка при загрузке изображения!']);
     }
 }
 

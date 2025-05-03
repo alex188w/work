@@ -40,136 +40,76 @@ class UstanovkaController extends Controller
         foreach ($ustanovkas as $ustanovka) {
             $tableName = 'ukz_' . $ustanovka->id;
             if (Schema::hasTable($tableName)) {
-
                 $workModel = $ustanovka->getWorkTable();
-
-                // Все запланированные работы (все записи)
+    
+                // Все запланированные работы
                 $ustanovka->all_works = $workModel->newQuery()->get();
-
+    
                 // Работы на текущий месяц
                 $ustanovka->month_works = $workModel->newQuery()
                     ->whereMonth('work_date', Carbon::now()->month)
                     ->whereYear('work_date', Carbon::now()->year)
                     ->get();
-
+    
                 // Работы на текущую неделю
                 $ustanovka->week_works = $workModel->newQuery()
                     ->whereBetween('work_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-                ->get();
+                    ->get();
+    
+                // Просроченные работы (до текущей недели и не выполненные)
+                $ustanovka->past_works = $workModel->newQuery()
+                    ->where('is_done', 0)
+                    ->where('work_date', '<', Carbon::now()->startOfWeek())
+                    ->get();                    
             } else {
-                // Устанавливаем пустую коллекцию, если таблицы нет
+                // Устанавливаем пустые коллекции, если таблицы нет
                 $ustanovka->all_works = collect();
                 $ustanovka->month_works = collect();
                 $ustanovka->week_works = collect();
-                // Log::info("Установка {$ustanovka->id}: work_dates = пустая коллекция");
+                $ustanovka->past_works = collect();
             }
         }
         return view('index', compact('ustanovkas', 'gazoprovods'));
     }
 
-//     public function worksList() // для всех дат    
-// {
-//     $ustanovkas = Ustanovka::all(); // Получаем все установки
-
-//     foreach ($ustanovkas as $ustanovka) {
-//         $tableName = 'ukz_' . $ustanovka->id;
-
-//         // Проверяем существование таблицы
-//         if (Schema::hasTable($tableName)) {
-//             $workModel = $ustanovka->getWorkTable(); // Получаем динамическую модель
-//             $ustanovka->work_date = $workModel->newQuery()->pluck('work_date'); // Получаем даты работ
-//         } else {
-//             $ustanovka->work_date = collect(); // Пустая коллекция, если таблицы нет
-//         }
-//     }
-//     return view('works_list', compact('ustanovkas'));
-// }
-
-// public function worksList() // для текущей недели
-// {
-//     $ustanovkas = Ustanovka::all(); // Получаем все установки
-
-//     // Определяем границы текущей недели
-//     $startOfWeek = Carbon::now()->startOfWeek(); // Понедельник
-//     $endOfWeek = Carbon::now()->endOfWeek(); // Воскресенье
-
-//     foreach ($ustanovkas as $ustanovka) {
-//         $tableName = 'ukz_' . $ustanovka->id;
-
-//         if (Schema::hasTable($tableName)) {
-//             $workModel = $ustanovka->getWorkTable();
-
-//             // Фильтруем только работы за текущую неделю
-//             $ustanovka->work_date = $workModel
-//                 ->newQuery()
-//                 ->whereBetween('work_date', [$startOfWeek, $endOfWeek])
-//                 ->pluck('work_date');
-//         } else {
-//             $ustanovka->work_date = collect(); // Пустая коллекция, если таблицы нет
-//         }
-//     }
-//     return view('works_list', compact('ustanovkas'));
-// }
-
-    // public function worksList() // для текущего месяца
-    // {
-    //     $ustanovkas = Ustanovka::all();
-
-    //     $currentMonth = Carbon::now()->month;
-    //     $currentYear = Carbon::now()->year;
-
-    //     foreach ($ustanovkas as $ustanovka) {
-    //         $tableName = 'ukz_' . $ustanovka->id;
-
-    //         if (Schema::hasTable($tableName)) {
-    //             $workModel = $ustanovka->getWorkTable();
-
-    //             $ustanovka->work_date = $workModel
-    //                 ->newQuery()
-    //                 ->whereMonth('work_date', $currentMonth)
-    //                 ->whereYear('work_date', $currentYear)
-    //                 ->pluck('work_date');
-    //         } else {
-    //             // Устанавливаем пустую коллекцию, если таблицы нет
-    //             $ustanovka->work_date = collect();
-    //             Log::info("Установка {$ustanovka->id}: work_dates = пустая коллекция");
-    //         }
-    //     }
-    //     return view('works_list', compact('ustanovkas'));
-    // }
-
     public function worksList()
     {
         $ustanovkas = Ustanovka::all(); // Получаем все установки
-
+    
         foreach ($ustanovkas as $ustanovka) {
             $tableName = 'ukz_' . $ustanovka->id;
             if (Schema::hasTable($tableName)) {
-
                 $workModel = $ustanovka->getWorkTable();
-
-                // Все запланированные работы (все записи)
+    
+                // Все запланированные работы
                 $ustanovka->all_works = $workModel->newQuery()->get();
-
+    
                 // Работы на текущий месяц
                 $ustanovka->month_works = $workModel->newQuery()
                     ->whereMonth('work_date', Carbon::now()->month)
                     ->whereYear('work_date', Carbon::now()->year)
                     ->get();
-
+    
                 // Работы на текущую неделю
                 $ustanovka->week_works = $workModel->newQuery()
                     ->whereBetween('work_date', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-                ->get();
+                    ->get();
+    
+                // Просроченные работы (до текущей недели и не выполненные)
+                $ustanovka->past_works = $workModel->newQuery()
+                    ->where('is_done', 0)
+                    ->where('work_date', '<', Carbon::now()->startOfWeek())
+                    ->get();                    
             } else {
-                // Устанавливаем пустую коллекцию, если таблицы нет
+                // Устанавливаем пустые коллекции, если таблицы нет
                 $ustanovka->all_works = collect();
                 $ustanovka->month_works = collect();
                 $ustanovka->week_works = collect();
-                // Log::info("Установка {$ustanovka->id}: work_dates = пустая коллекция");
+                $ustanovka->past_works = collect();
             }
         }
         
+    
         return view('works_list', compact('ustanovkas'));
     }
 
@@ -213,17 +153,19 @@ class UstanovkaController extends Controller
         $ustanovka = Ustanovka::find($request->ustanovka_id);
         $gazoprovodName = $ustanovka->gazoprovod->name; // Доступ к газопроводу через установку
         $ustanovkaName = $ustanovka->name;
-        $work_date = $request->work_date;
-        // Определяем таблицу
-        // $tableName = 'ukz_' . $ustanovka_id;
+        $work_date = $request->work_date;    
 
         if (!$ustanovka) {
             $text = 'Установка не найдена!';
             return redirect()->back()->with('text', $text);
         }
 
+        $auto = implode(', ', array_filter([$request->auto1, $request->auto2, $request->auto3]));
+        // dd($auto);  
         // Добавляем новую работу
-        $ustanovka->addWork($request->only(["ustanovka_id", "type_of_work", "work_date"])); 
+        $data = $request->only(["ustanovka_id", "type_of_work", "work_date"]);
+        $data["auto"] = $auto; // Добавляем строку авто в массив
+        $ustanovka->addWork($data); 
         $text = 'Работа добавлена для ' . $ustanovkaName . ' на ' . $work_date . '!';
 
         return redirect()->back()->with('text', $text);
@@ -244,7 +186,7 @@ class UstanovkaController extends Controller
         // Находим запись
         $work = $workModel->find($work_id);
 
-        $files = Storage::files('works/2');
+        $files = Storage::files('works/' . $ustanovka_id);
 
         // var_dump($files);
         // foreach ($files as $file) {
@@ -259,9 +201,13 @@ class UstanovkaController extends Controller
 
     public function update(Request $request, $ustanovka_id, $work_id)
     {
+        $text = '';
         $tableName = 'ukz_' . $ustanovka_id;
         $workModel = new UstanovkaWork();
         $workModel->setTable($tableName);
+
+        $work_date = $request->work_date;    
+        $ustanovkaName = $request->ustanovka_name;
 
         $work = $workModel->find($work_id);   
 
@@ -272,12 +218,13 @@ class UstanovkaController extends Controller
         // Загрузка изображений, получение 'image_path' осуществляется через отдельную форму и 
         // метод public function uploadImage(Request $request, $ustanovka_id, $work_id) контроллеа ImageUploadController
 
-        $data = $request->only(["ustanovka_id", "type_of_work", "work_date", "I", "U", "Usum", "Upol", "work_performers", "work_description", "remarks", "is_done"]);
+        $data = $request->only(["ustanovka_id", "type_of_work", "work_date", "I", "U", "Usum", "Upol", "snv", "EE", "work_performers", "work_description", "remarks", "is_done"]);
         // $work->update($request->except(['id', 'csrf_token', 'submit', '/addWork', '/work/update/2/5']));
     
-        $work->update($data);    
+        $work->update($data);   
+        $text = 'Данные сохранены!'; 
        
-        return redirect()->back()->with('success', 'Работа обновлена');
+        return redirect()->back()->with('text', $text);
         // return response()->json(['success' => false, 'message' => 'Ошибка при загрузке изображения.']);
         // return response()->json([
         //     'success' => true,
